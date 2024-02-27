@@ -1,0 +1,126 @@
+psql --username=freecodecamp --dbname=postgres
+
+create database universe;
+
+-- Connect to your database (assuming it is already created)
+\c universe
+
+-- Create 'galaxy' table
+CREATE TABLE galaxy (
+    galaxy_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    designation VARCHAR(255) UNIQUE NOT NULL,
+    light_years_diameter DECIMAL NOT NULL,
+    galaxy_type VARCHAR(50) NOT NULL,
+    factoid TEXT
+);
+
+-- Create 'star' table
+CREATE TABLE star (
+    star_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    galaxy_id INTEGER REFERENCES galaxy(galaxy_id) ON DELETE CASCADE,
+    classification VARCHAR(50) NOT NULL,
+    solar_masses DECIMAL NOT NULL,
+    is_binary BOOLEAN DEFAULT false,
+    description TEXT
+);
+
+-- Create 'planet' table
+CREATE TABLE planet (
+    planet_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    star_id INTEGER REFERENCES star(star_id) ON DELETE CASCADE,
+    type VARCHAR(50) NOT NULL,
+    has_life BOOLEAN DEFAULT false,
+    num_of_moons INTEGER DEFAULT 0,
+    description TEXT
+);
+
+-- Create 'moon' table
+CREATE TABLE moon (
+    moon_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    planet_id INTEGER REFERENCES planet(planet_id) ON DELETE CASCADE,
+    is_inhabited BOOLEAN DEFAULT false,
+    surface_area_km2 DECIMAL,
+    description TEXT,
+    man_landed INT,
+    man_survived INT
+);
+
+CREATE TABLE satellitefromelon (
+    satellitefromelon_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    planet_id INTEGER REFERENCES planet(planet_id) ON DELETE CASCADE,
+    is_inhabited BOOLEAN DEFAULT false,
+    surface_area_km2 DECIMAL,
+    description TEXT,
+    man_landed INT,
+    man_survived INT
+);
+
+
+insert into satellitefromelon(name)
+values ('ciao'),('noia'),('molta');
+
+INSERT INTO galaxy (name, light_years_diameter, designation,galaxy_type)
+VALUES
+  ('furia', 120000, 'A future galaxy formed by the collision of the Milky Way and Andromeda.','cacca'),
+  ('ciaon', 60000, 'A classic spiral galaxy with well-defined arms.','cacca'),
+  ('pelo', 17000, 'A galaxy with a prominent dark band of absorbing dust in front of the galaxy''s bright nucleus.','cacca'),
+  ('tantric', 420000, 'A disrupted barred spiral galaxy with a long tail.','cacca'),
+  ('anflo', 100000, 'A flocculent spiral galaxy.','cacca'),
+  ('pne', 170000, 'A face-on spiral galaxy.','cacca');
+
+INSERT INTO star (name, classification, solar_masses, galaxy_id)
+VALUES
+  ('Stella1', 'boh', 1, (select galaxy_id from galaxy where name = 'furia')),
+  ('Stella2', 'boh', 1, (select galaxy_id from galaxy where name = 'ciaon')),
+  ('Stella3', 'boh', 1, (select galaxy_id from galaxy where name = 'furia')),
+  ('Stella4', 'boh', 1, (select galaxy_id from galaxy where name = 'tantric')),
+  ('Stella5', 'boh', 1, (select galaxy_id from galaxy where name = 'furia')),
+  ('Stella6', 'boh', 1, (select galaxy_id from galaxy where name = 'pne'));
+
+  insert into planet(name,type,star_id)
+  values
+  ('terra','nostra',(select star_id from star where name = 'Stella1')),
+  ('terra1','nostra',(select star_id from star where name = 'Stella1')),
+  ('terra2','nostra',(select star_id from star where name = 'Stella1')),
+  ('terra3','nostra',(select star_id from star where name = 'Stella1')),
+  ('terra4','nostra',(select star_id from star where name = 'Stella1')),
+  ('terra5','nostra',(select star_id from star where name = 'Stella1')),
+  ('terra6','nostra',(select star_id from star where name = 'Stella1')),
+  ('terra7','nostra',(select star_id from star where name = 'Stella1')),
+  ('terra9','nostra',(select star_id from star where name = 'Stella1')),
+  ('terra0','nostra',(select star_id from star where name = 'Stella1')),
+  ('terra11','nostra',(select star_id from star where name = 'Stella1')),
+  ('terra122','nostra',(select star_id from star where name = 'Stella1')),
+  ('terra144','nostra',(select star_id from star where name = 'Stella1'));
+
+
+  insert into moon(name, planet_id)
+  values
+  ('luna',(select planet_id from planet where name='terra')),
+    ('luna00',(select planet_id from planet where name='terra')),
+      ('luna1',(select planet_id from planet where name='terra')),
+      ('luna2',(select planet_id from planet where name='terra')),
+      ('luna3',(select planet_id from planet where name='terra')),
+      ('luna5',(select planet_id from planet where name='terra')),
+      ('luna6',(select planet_id from planet where name='terra')),
+      ('luna78',(select planet_id from planet where name='terra')),
+      ('luna66',(select planet_id from planet where name='terra')),
+      ('luna12',(select planet_id from planet where name='terra')),
+      ('luna13',(select planet_id from planet where name='terra')),
+      ('luna14',(select planet_id from planet where name='terra')),
+      ('luna15',(select planet_id from planet where name='terra')),
+      ('luna26',(select planet_id from planet where name='terra')),
+      ('luna36',(select planet_id from planet where name='terra')),
+      ('luna27',(select planet_id from planet where name='terra')),
+      ('luna56',(select planet_id from planet where name='terra')),
+      ('luna89',(select planet_id from planet where name='terra')),
+      ('luna02',(select planet_id from planet where name='terra')),
+      ('luna65',(select planet_id from planet where name='terra')),
+      ('luna91',(select planet_id from planet where name='terra'));
+
+  
